@@ -185,7 +185,7 @@ if (buttonIndex == 1)
 		[theSessionsArray addObject:theSessionDictionary];
 		}
 		
-	NSData *theJSON = [[CJSONDataSerializer serializer] serializeObject:theSessionsArray];
+	NSData *theJSON = [[CJSONDataSerializer serializer] serializeObject:theSessionsArray error:NULL];
 
 	MFMailComposeViewController *theController = [[[MFMailComposeViewController alloc] init] autorelease];
 	theController.mailComposeDelegate = self;

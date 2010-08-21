@@ -139,7 +139,6 @@ handlers = NULL;
 
 - (NSManagedObject *)session
 {
-NSAssert(self.sessionID != NULL, @"No session ID");
 NSError *theError = NULL;
 NSManagedObject *theSession = [self.coreDataManager.managedObjectContext existingObjectWithID:self.sessionID error:&theError];
 if (theError)
