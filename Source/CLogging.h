@@ -31,7 +31,6 @@
 
 #include <stdarg.h>
 
-#import "CCoreDataManager.h"
 #import "FileFunctionLine.h"
 
 typedef enum {
@@ -51,30 +50,26 @@ enum {
 	LoggingFlags_WriteToDatabase = 0x02,
 	};
 
-@class CBetterCoreDataManager;
-@class NSManagedObjectID;
+@class CLoggingDestination;
 
 @protocol CLoggingHandler;
 
-@interface CLogging : NSObject <CCoreDataManagerDelegate> {
+@interface CLogging : NSObject {
 	BOOL enabled;
 	NSUInteger flags;
 	NSString *sender;
 	NSString *facility;
-	CBetterCoreDataManager *coreDataManager;
-	NSManagedObjectID *sessionID;
-	NSMutableDictionary *handlers;
 	BOOL started;
+    CLoggingDestination *loggingDestination;
+    NSMutableDictionary *handlers;
 }
 
 @property (readwrite, assign) BOOL enabled;
 @property (readwrite, assign) NSUInteger flags;
 @property (readwrite, copy) NSString *sender;
 @property (readwrite, copy) NSString *facility;
-@property (readonly, retain) CBetterCoreDataManager *coreDataManager;
-
-@property (readonly, copy) NSManagedObjectID *sessionID;
-@property (readonly, retain) NSManagedObject *session;
+@property (readwrite, retain) NSMutableDictionary *handlers;
+@property (readwrite, retain) CLoggingDestination *loggingDestination;
 
 /** Returns the thread's logging isntance */
 + (CLogging *)instance;

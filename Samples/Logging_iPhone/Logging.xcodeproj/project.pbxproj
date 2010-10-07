@@ -36,7 +36,11 @@
 		457B5F4F1097C28C00B564BC /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B5F321097C28C00B564BC /* CJSONSerializer.m */; };
 		457B5F751097C33F00B564BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 457B5F741097C33F00B564BC /* CoreData.framework */; };
 		457B5FF71097C93500B564BC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 457B5FF61097C93500B564BC /* MessageUI.framework */; };
-		45D4BF7A109A2C5F00A04235 /* CMailLoggingHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D4BF77109A2C5F00A04235 /* CMailLoggingHandler.m */; };
+		45AC27C6125E35C900D9A12C /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC27A1125E35C900D9A12C /* ISO8601DateFormatter.m */; };
+		45AC27C7125E35C900D9A12C /* NSDate_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC27A3125E35C900D9A12C /* NSDate_Extensions.m */; };
+		45AC27C8125E35C900D9A12C /* NSDate_InternetDateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC27A5125E35C900D9A12C /* NSDate_InternetDateExtensions.m */; };
+		45AC27C9125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC27A7125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.m */; };
+		45AC2833125E399D00D9A12C /* CLoggingDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AC27FC125E374100D9A12C /* CLoggingDestination.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,6 +96,16 @@
 		457B5F321097C28C00B564BC /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
 		457B5F741097C33F00B564BC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		457B5FF61097C93500B564BC /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		45AC27A0125E35C900D9A12C /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		45AC27A1125E35C900D9A12C /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		45AC27A2125E35C900D9A12C /* NSDate_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_Extensions.h; sourceTree = "<group>"; };
+		45AC27A3125E35C900D9A12C /* NSDate_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_Extensions.m; sourceTree = "<group>"; };
+		45AC27A4125E35C900D9A12C /* NSDate_InternetDateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_InternetDateExtensions.h; sourceTree = "<group>"; };
+		45AC27A5125E35C900D9A12C /* NSDate_InternetDateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_InternetDateExtensions.m; sourceTree = "<group>"; };
+		45AC27A6125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateFormatter_InternetDateExtensions.h; sourceTree = "<group>"; };
+		45AC27A7125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateFormatter_InternetDateExtensions.m; sourceTree = "<group>"; };
+		45AC27FB125E374100D9A12C /* CLoggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLoggingDestination.h; sourceTree = "<group>"; };
+		45AC27FC125E374100D9A12C /* CLoggingDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLoggingDestination.m; sourceTree = "<group>"; };
 		45D4BF76109A2C5F00A04235 /* CMailLoggingHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMailLoggingHandler.h; sourceTree = "<group>"; };
 		45D4BF77109A2C5F00A04235 /* CMailLoggingHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMailLoggingHandler.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Logging_iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Logging_iPhone-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -135,7 +149,6 @@
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
 				457B5EB81097BFCD00B564BC /* Source */,
-				45426EFF122030960078E320 /* TouchFoundation */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -210,13 +223,13 @@
 			children = (
 				45426FFB122030960078E320 /* Source */,
 			);
-			name = TouchFoundation;
-			path = ../../../TouchFoundation;
-			sourceTree = SOURCE_ROOT;
+			path = TouchFoundation;
+			sourceTree = "<group>";
 		};
 		45426FFB122030960078E320 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				45AC279D125E35C900D9A12C /* Extensions */,
 				4533D1B6125E3C0800147D2C /* Extensions */,
 				45427002122030960078E320 /* CoreData */,
 			);
@@ -243,22 +256,25 @@
 			children = (
 				457B5EB91097BFCD00B564BC /* CLogging.h */,
 				457B5EBA1097BFCD00B564BC /* CLogging.m */,
+				45AC27FB125E374100D9A12C /* CLoggingDestination.h */,
+				45AC27FC125E374100D9A12C /* CLoggingDestination.m */,
 				457B5EBF1097BFCD00B564BC /* FileFunctionLine.h */,
 				457B5EC01097BFCD00B564BC /* FileFunctionLine.m */,
 				457B5EC81097BFCD00B564BC /* Logging.xcdatamodel */,
 				45D4BF75109A2C5F00A04235 /* Extras */,
-				457B5EED1097C28C00B564BC /* touchcode */,
+				457B5EED1097C28C00B564BC /* Externals */,
 			);
 			name = Source;
 			path = ../../Source;
 			sourceTree = SOURCE_ROOT;
 		};
-		457B5EED1097C28C00B564BC /* touchcode */ = {
+		457B5EED1097C28C00B564BC /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				45426EFF122030960078E320 /* TouchFoundation */,
 				457B5F1B1097C28C00B564BC /* TouchJSON */,
 			);
-			name = touchcode;
+			name = Externals;
 			path = ../../..;
 			sourceTree = SOURCE_ROOT;
 		};
@@ -311,6 +327,37 @@
 				457B5F321097C28C00B564BC /* CJSONSerializer.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		45AC279D125E35C900D9A12C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				45AC279E125E35C900D9A12C /* Dates */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		45AC279E125E35C900D9A12C /* Dates */ = {
+			isa = PBXGroup;
+			children = (
+				45AC279F125E35C900D9A12C /* ISO-8601-parser-0.5 */,
+				45AC27A2125E35C900D9A12C /* NSDate_Extensions.h */,
+				45AC27A3125E35C900D9A12C /* NSDate_Extensions.m */,
+				45AC27A4125E35C900D9A12C /* NSDate_InternetDateExtensions.h */,
+				45AC27A5125E35C900D9A12C /* NSDate_InternetDateExtensions.m */,
+				45AC27A6125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.h */,
+				45AC27A7125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.m */,
+			);
+			path = Dates;
+			sourceTree = "<group>";
+		};
+		45AC279F125E35C900D9A12C /* ISO-8601-parser-0.5 */ = {
+			isa = PBXGroup;
+			children = (
+				45AC27A0125E35C900D9A12C /* ISO8601DateFormatter.h */,
+				45AC27A1125E35C900D9A12C /* ISO8601DateFormatter.m */,
+			);
+			path = "ISO-8601-parser-0.5";
 			sourceTree = "<group>";
 		};
 		45D4BF75109A2C5F00A04235 /* Extras */ = {
@@ -399,11 +446,15 @@
 				457B5F4D1097C28C00B564BC /* CJSONDeserializer.m in Sources */,
 				457B5F4E1097C28C00B564BC /* CJSONScanner.m in Sources */,
 				457B5F4F1097C28C00B564BC /* CJSONSerializer.m in Sources */,
-				45D4BF7A109A2C5F00A04235 /* CMailLoggingHandler.m in Sources */,
 				454270ED122030960078E320 /* CBetterCoreDataManager.m in Sources */,
 				454270EE122030960078E320 /* CCoreDataManager.m in Sources */,
 				454270EF122030960078E320 /* CEntityDataSource.m in Sources */,
 				454270F0122030960078E320 /* NSManagedObjectContext_Extensions.m in Sources */,
+				45AC27C6125E35C900D9A12C /* ISO8601DateFormatter.m in Sources */,
+				45AC27C7125E35C900D9A12C /* NSDate_Extensions.m in Sources */,
+				45AC27C8125E35C900D9A12C /* NSDate_InternetDateExtensions.m in Sources */,
+				45AC27C9125E35C900D9A12C /* NSDateFormatter_InternetDateExtensions.m in Sources */,
+				45AC2833125E399D00D9A12C /* CLoggingDestination.m in Sources */,
 				4533D1DF125E3C0800147D2C /* ISO8601DateFormatter.m in Sources */,
 				4533D1E0125E3C0800147D2C /* NSDate_Extensions.m in Sources */,
 				4533D1E1125E3C0800147D2C /* NSDate_InternetDateExtensions.m in Sources */,
