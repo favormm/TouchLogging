@@ -13,6 +13,10 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
+		4533D1DF125E3C0800147D2C /* ISO8601DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4533D1BA125E3C0800147D2C /* ISO8601DateFormatter.m */; };
+		4533D1E0125E3C0800147D2C /* NSDate_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4533D1BC125E3C0800147D2C /* NSDate_Extensions.m */; };
+		4533D1E1125E3C0800147D2C /* NSDate_InternetDateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4533D1BE125E3C0800147D2C /* NSDate_InternetDateExtensions.m */; };
+		4533D1E2125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4533D1C0125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.m */; };
 		454270ED122030960078E320 /* CBetterCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45427004122030960078E320 /* CBetterCoreDataManager.m */; };
 		454270EE122030960078E320 /* CCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45427006122030960078E320 /* CCoreDataManager.m */; };
 		454270EF122030960078E320 /* CEntityDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 45427008122030960078E320 /* CEntityDataSource.m */; };
@@ -45,6 +49,14 @@
 		28A0AAE50D9B0CCF005BE974 /* Logging_iPhone_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logging_iPhone_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		4533D1B9125E3C0800147D2C /* ISO8601DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISO8601DateFormatter.h; sourceTree = "<group>"; };
+		4533D1BA125E3C0800147D2C /* ISO8601DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISO8601DateFormatter.m; sourceTree = "<group>"; };
+		4533D1BB125E3C0800147D2C /* NSDate_Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_Extensions.h; sourceTree = "<group>"; };
+		4533D1BC125E3C0800147D2C /* NSDate_Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_Extensions.m; sourceTree = "<group>"; };
+		4533D1BD125E3C0800147D2C /* NSDate_InternetDateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_InternetDateExtensions.h; sourceTree = "<group>"; };
+		4533D1BE125E3C0800147D2C /* NSDate_InternetDateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_InternetDateExtensions.m; sourceTree = "<group>"; };
+		4533D1BF125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDateFormatter_InternetDateExtensions.h; sourceTree = "<group>"; };
+		4533D1C0125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateFormatter_InternetDateExtensions.m; sourceTree = "<group>"; };
 		45427003122030960078E320 /* CBetterCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBetterCoreDataManager.h; sourceTree = "<group>"; };
 		45427004122030960078E320 /* CBetterCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CBetterCoreDataManager.m; sourceTree = "<group>"; };
 		45427005122030960078E320 /* CCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreDataManager.h; sourceTree = "<group>"; };
@@ -162,6 +174,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4533D1B6125E3C0800147D2C /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				4533D1B7125E3C0800147D2C /* Dates */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		4533D1B7125E3C0800147D2C /* Dates */ = {
+			isa = PBXGroup;
+			children = (
+				4533D1B8125E3C0800147D2C /* ISO-8601-parser-0.5 */,
+				4533D1BB125E3C0800147D2C /* NSDate_Extensions.h */,
+				4533D1BC125E3C0800147D2C /* NSDate_Extensions.m */,
+				4533D1BD125E3C0800147D2C /* NSDate_InternetDateExtensions.h */,
+				4533D1BE125E3C0800147D2C /* NSDate_InternetDateExtensions.m */,
+				4533D1BF125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.h */,
+				4533D1C0125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.m */,
+			);
+			path = Dates;
+			sourceTree = "<group>";
+		};
+		4533D1B8125E3C0800147D2C /* ISO-8601-parser-0.5 */ = {
+			isa = PBXGroup;
+			children = (
+				4533D1B9125E3C0800147D2C /* ISO8601DateFormatter.h */,
+				4533D1BA125E3C0800147D2C /* ISO8601DateFormatter.m */,
+			);
+			path = "ISO-8601-parser-0.5";
+			sourceTree = "<group>";
+		};
 		45426EFF122030960078E320 /* TouchFoundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +217,7 @@
 		45426FFB122030960078E320 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				4533D1B6125E3C0800147D2C /* Extensions */,
 				45427002122030960078E320 /* CoreData */,
 			);
 			path = Source;
@@ -360,6 +404,10 @@
 				454270EE122030960078E320 /* CCoreDataManager.m in Sources */,
 				454270EF122030960078E320 /* CEntityDataSource.m in Sources */,
 				454270F0122030960078E320 /* NSManagedObjectContext_Extensions.m in Sources */,
+				4533D1DF125E3C0800147D2C /* ISO8601DateFormatter.m in Sources */,
+				4533D1E0125E3C0800147D2C /* NSDate_Extensions.m in Sources */,
+				4533D1E1125E3C0800147D2C /* NSDate_InternetDateExtensions.m in Sources */,
+				4533D1E2125E3C0800147D2C /* NSDateFormatter_InternetDateExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
