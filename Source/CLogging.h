@@ -31,71 +31,43 @@
 
 #include <stdarg.h>
 
-#import "CCoreDataManager.h"
+#import "CLogEvent.h"
+#import "CLogSession.h"
 #import "FileFunctionLine.h"
 
-typedef enum {
-	LoggingLevel_EMERG = 0,
-	LoggingLevel_ALERT = 1,
-	LoggingLevel_CRIT = 2,
-	LoggingLevel_ERR = 3,
-	LoggingLevel_WARNING = 4,
-	LoggingLevel_NOTICE = 5,
-	LoggingLevel_INFO = 6,
-	LoggingLevel_DEBUG = 7,
-} ELoggingLevel;
+@class CLogEvent;
 
-enum {
-	LoggingFlags_None = 0x00,
-	LoggingFlags_WriteToSTDERR = 0x01,
-	LoggingFlags_WriteToDatabase = 0x02,
-	};
+@protocol CLoggingDestination;
 
-@class CBetterCoreDataManager;
-@class NSManagedObjectID;
-
-@protocol CLoggingHandler;
-
-@interface CLogging : NSObject <CCoreDataManagerDelegate> {
+@interface CLogging : NSObject {
 	BOOL enabled;
-	NSUInteger flags;
 	NSString *sender;
 	NSString *facility;
-	CBetterCoreDataManager *coreDataManager;
-	NSManagedObjectID *sessionID;
-	NSMutableDictionary *handlers;
-	BOOL started;
+    NSMutableArray *sessions;
+    NSMutableArray *destinations;
 }
 
 @property (readwrite, assign) BOOL enabled;
-@property (readwrite, assign) NSUInteger flags;
 @property (readwrite, copy) NSString *sender;
 @property (readwrite, copy) NSString *facility;
-@property (readonly, retain) CBetterCoreDataManager *coreDataManager;
+@property (readwrite, retain) NSMutableArray *sessions;
+@property (readwrite, retain) NSMutableArray *destinations;
 
-@property (readonly, copy) NSManagedObjectID *sessionID;
-@property (readonly, retain) NSManagedObject *session;
+/** Returns the thread's logging instance */
++ (CLogging *)sharedInstance;
 
-/** Returns the thread's logging isntance */
-+ (CLogging *)instance;
+- (void)addDestination:(id <CLoggingDestination>)inHandler;
+- (void)removeDestination:(id <CLoggingDestination>)inHandler;
 
-+ (NSString *)stringForLevel:(NSInteger)inLevel;
-
-/** accessor for controlling the sender of a logging object. The setSender message should be sent before the target receives a client message. */
-- (NSString *)sender;
-- (void)setSender:(NSString *)inSender;
-
-/** accessor for controlling the facility of a logging object. The setFacility message should be sent before the target receives a client message. */
-- (NSString *)facility;
-- (void)setFacility:(NSString *)inFacility;
-
-- (void)addHandler:(id <CLoggingHandler>)inHandler forEvents:(NSArray *)inEvents;
-- (void)removeHandler:(id <CLoggingHandler>)inHandler;
+- (void)startSession:(NSString *)inIdentifier;
+- (void)endSession;
 
 /// Logging.
+- (void)logEvent:(CLogEvent *)inLogEvent;
+
 - (void)logLevel:(int)inLevel format:(NSString *)inFormat, ...;
-- (void)logLevel:(int)inLevel dictionary:(NSDictionary *)inDictionary format:(NSString *)inFormat, ...;
-- (void)logLevel:(int)inLevel fileFunctionLine:(SFileFunctionLine)inFileFunctionLine dictionary:(NSDictionary *)inDictionary format:(NSString *)inFormat, ...;
+- (void)logLevel:(int)inLevel userInfo:(NSDictionary *)inDictionary messageFormat:(NSString *)inFormat, ...;
+- (void)logLevel:(int)inLevel fileFunctionLine:(SFileFunctionLine)inFileFunctionLine userInfo:(NSDictionary *)inDictionary messageFormat:(NSString *)inFormat, ...;
 
 - (void)logError:(NSError *)inError;
 - (void)logException:(NSException *)inException;
@@ -104,10 +76,14 @@ enum {
 
 #pragma mark -
 
-@protocol CLoggingHandler <NSObject>
+@protocol CLoggingDestination <NSObject>
 
 @optional
-- (BOOL)handleLogging:(CLogging *)inLogging event:(NSString *)inEvent error:(NSError **)outError;
+- (BOOL)loggingDidStart:(CLogging *)inLogging;
+- (BOOL)loggingDidEnd:(CLogging *)inLogging;
+
+@required
+- (BOOL)logging:(CLogging *)inLogging didLogEvent:(CLogEvent *)inEvent;
 
 @end
 
@@ -123,7 +99,7 @@ enum {
 	do \
 		{ \
 		NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init]; \
-		[[CLogging instance] logLevel:(level) fileFunctionLine:FileFunctionLine_() dictionary:FileFunctionLineDict_() format:__VA_ARGS__]; \
+		[[CLogging sharedInstance] logLevel:(level) fileFunctionLine:FileFunctionLine_() userInfo:FileFunctionLineDict_() messageFormat:__VA_ARGS__]; \
 		[thePool release]; \
 		} \
 	while (0)
@@ -132,7 +108,7 @@ enum {
 	do \
 		{ \
 		NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init]; \
-		[[CLogging instance] logLevel:(level) fileFunctionLine:FileFunctionLine_() dictionary:dict format:__VA_ARGS__]; \
+		[[CLogging sharedInstance] logLevel:(level) fileFunctionLine:FileFunctionLine_() userInfo:dict messageFormat:__VA_ARGS__]; \
 		[thePool release]; \
 		} \
 	while (0)
@@ -160,19 +136,3 @@ enum {
 #define LogDebug_(...)
 
 #endif /* LOGGING == 1 */
-
-#pragma mark -
-
-@interface NSError (NSException_LogExtensions)
-
-- (void)log;
-
-@end
-
-@interface NSException (NSException_LogExtensions)
-
-- (void)log;
-
-@end
-
-

@@ -30,7 +30,7 @@
 #import "Logging_iPhoneAppDelegate.h"
 
 #import "CLogging.h"
-#import "CMailLoggingHandler.h"
+//#import "CMailLoggingHandler.h"
 
 @implementation Logging_iPhoneAppDelegate
 
@@ -50,13 +50,13 @@
 [window addSubview:[navigationController view]];
 [window makeKeyAndVisible];
 
-CMailLoggingHandler *theHandler = [[[CMailLoggingHandler alloc] init] autorelease];
-theHandler.viewController = navigationController;
-theHandler.recipients = [NSArray arrayWithObject:@"jwight@mac.com"];
-theHandler.subject = @"Logging";
-theHandler.body = @"This is the body.";
-
-[[CLogging instance] addHandler:theHandler forEvents:[NSArray arrayWithObject:@"start"]];
+//CMailLoggingHandler *theHandler = [[[CMailLoggingHandler alloc] init] autorelease];
+//theHandler.viewController = navigationController;
+//theHandler.recipients = [NSArray arrayWithObject:@"jwight@mac.com"];
+//theHandler.subject = @"Logging";
+//theHandler.body = @"This is the body.";
+//
+//[[CLogging instance] addHandler:theHandler forEvents:[NSArray arrayWithObject:@"start"]];
 }
 
 - (IBAction)actionLog:(id)inSender
