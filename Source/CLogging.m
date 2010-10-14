@@ -34,8 +34,6 @@
 static CLogging *gInstance = NULL;
 
 @interface CLogging ()
-- (void)startSession;
-- (void)endSession;
 @end
 
 #pragma mark -
@@ -130,9 +128,9 @@ static CLogging *gInstance = NULL;
     [self.destinations removeObject:inHandler];
     }
 
-- (void)startSession
+- (void)startSession:(NSString *)inIdentifier
     {
-    [self.sessions addObject:[[[CLogSession alloc] init] autorelease]];
+    [self.sessions addObject:[[[CLogSession alloc] initWithParentSession:[self.sessions lastObject] identifier:inIdentifier] autorelease]];
 
     for (id <CLoggingDestination> theHandler in self.destinations)
         {
@@ -166,7 +164,7 @@ static CLogging *gInstance = NULL;
         
     if (self.sessions.count == 0)
         {
-        [self startSession];
+        [self startSession:@"root"];
         }
 
     inLogEvent.session = [self.sessions lastObject];
@@ -176,6 +174,8 @@ static CLogging *gInstance = NULL;
         inLogEvent.sender = self.sender;
     if (inLogEvent.facility == NULL)
         inLogEvent.facility = self.facility;
+
+    NSLog(@"%@", inLogEvent);
 
     for (id <CLoggingDestination> theHandler in self.destinations)
         {
@@ -197,7 +197,7 @@ static CLogging *gInstance = NULL;
     CLogEvent *theEvent = [[[CLogEvent alloc] init] autorelease];
     theEvent.level = inLevel;
     theEvent.message = theMessage;
-    
+        
     [self logEvent:theEvent];
 
     [thePool release];

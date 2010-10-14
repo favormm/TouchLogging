@@ -42,6 +42,11 @@
     //
     [super dealloc];
     }
+    
+- (NSString *)description
+    {
+    return([NSString stringWithFormat:@"%@ (session:%@, timestamp:%@, sender:%@, facility:%@, message:%@ userInfo:%@", [super description], self.session, self.timestamp, self.sender, self.facility, self.message, self.userInfo]);
+    }
 
 + (NSString *)stringForLevel:(NSInteger)inLevel;
     {

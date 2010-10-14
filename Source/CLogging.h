@@ -59,6 +59,9 @@
 - (void)addDestination:(id <CLoggingDestination>)inHandler;
 - (void)removeDestination:(id <CLoggingDestination>)inHandler;
 
+- (void)startSession:(NSString *)inIdentifier;
+- (void)endSession;
+
 /// Logging.
 - (void)logEvent:(CLogEvent *)inLogEvent;
 

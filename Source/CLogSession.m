@@ -10,12 +10,16 @@
 
 @implementation CLogSession
 
+@synthesize parentSession;
+@synthesize identifier;
 @synthesize started;
 
-- (id)init
+- (id)initWithParentSession:(CLogSession *)inParentSession identifier:(NSString *)inIdentifier
     {
     if ((self = [super init]) != NULL)
         {
+        parentSession = inParentSession;
+        identifier = [inIdentifier retain];
         started = [[NSDate date] retain];
         }
     return(self);
@@ -23,6 +27,11 @@
 
 - (void)dealloc
     {
+    parentSession = NULL;
+    
+    [identifier release];
+    identifier = NULL;
+    
     [started release];
     started = NULL;
     //
