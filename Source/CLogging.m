@@ -299,29 +299,3 @@ static CLogging *gInstance = NULL;
     }
 
 @end
-
-#pragma mark -
-
-@implementation NSError (NSError_LogExtensions)
-
-- (void)log
-    {
-    #if LOGGING == 1
-    [[CLogging sharedInstance] logError:self];
-    #endif /* LOGGING == 1 */
-    }
-
-@end
-
-#pragma mark -
-
-@implementation NSException (NSException_LogExtensions)
-
-- (void)log
-    {
-    #if LOGGING == 1
-    [[CLogging sharedInstance] logException:self];
-    #endif /* LOGGING == 1 */
-    }
-
-@end

@@ -136,19 +136,3 @@
 #define LogDebug_(...)
 
 #endif /* LOGGING == 1 */
-
-#pragma mark -
-
-@interface NSError (NSException_LogExtensions)
-
-- (void)log;
-
-@end
-
-@interface NSException (NSException_LogExtensions)
-
-- (void)log;
-
-@end
-
-

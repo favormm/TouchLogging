@@ -24,6 +24,8 @@
 		45750E2F12661993004F1415 /* CLogEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 45750E2E12661993004F1415 /* CLogEvent.m */; };
 		45750E321266199C004F1415 /* CLogSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 45750E311266199C004F1415 /* CLogSession.m */; };
 		45750E4512661AAE004F1415 /* CFileHandleLoggingDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 45750E4412661AAE004F1415 /* CFileHandleLoggingDestination.m */; };
+		45750FCF1266F3E8004F1415 /* NSError_LoggingExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45750FCE1266F3E8004F1415 /* NSError_LoggingExtensions.m */; };
+		45750FD61266F43B004F1415 /* NSException_LoggingExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45750FD51266F43B004F1415 /* NSException_LoggingExtensions.m */; };
 		457B5EC91097BFCD00B564BC /* CLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B5EBA1097BFCD00B564BC /* CLogging.m */; };
 		457B5ECC1097BFCD00B564BC /* FileFunctionLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 457B5EC01097BFCD00B564BC /* FileFunctionLine.m */; };
 		457B5ED11097BFCD00B564BC /* Logging.xcdatamodel in Sources */ = {isa = PBXBuildFile; fileRef = 457B5EC81097BFCD00B564BC /* Logging.xcdatamodel */; };
@@ -74,6 +76,10 @@
 		45750E311266199C004F1415 /* CLogSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLogSession.m; sourceTree = "<group>"; };
 		45750E4312661AAE004F1415 /* CFileHandleLoggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFileHandleLoggingDestination.h; sourceTree = "<group>"; };
 		45750E4412661AAE004F1415 /* CFileHandleLoggingDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CFileHandleLoggingDestination.m; sourceTree = "<group>"; };
+		45750FCD1266F3E8004F1415 /* NSError_LoggingExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSError_LoggingExtensions.h; sourceTree = "<group>"; };
+		45750FCE1266F3E8004F1415 /* NSError_LoggingExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSError_LoggingExtensions.m; sourceTree = "<group>"; };
+		45750FD41266F43B004F1415 /* NSException_LoggingExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSException_LoggingExtensions.h; sourceTree = "<group>"; };
+		45750FD51266F43B004F1415 /* NSException_LoggingExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSException_LoggingExtensions.m; sourceTree = "<group>"; };
 		457B5EB91097BFCD00B564BC /* CLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLogging.h; sourceTree = "<group>"; };
 		457B5EBA1097BFCD00B564BC /* CLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLogging.m; sourceTree = "<group>"; };
 		457B5EBF1097BFCD00B564BC /* FileFunctionLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileFunctionLine.h; sourceTree = "<group>"; };
@@ -260,6 +266,10 @@
 				45750E4412661AAE004F1415 /* CFileHandleLoggingDestination.m */,
 				45AC27FB125E374100D9A12C /* CCoreDataLoggingDestination.h */,
 				45AC27FC125E374100D9A12C /* CCoreDataLoggingDestination.m */,
+				45750FCD1266F3E8004F1415 /* NSError_LoggingExtensions.h */,
+				45750FCE1266F3E8004F1415 /* NSError_LoggingExtensions.m */,
+				45750FD41266F43B004F1415 /* NSException_LoggingExtensions.h */,
+				45750FD51266F43B004F1415 /* NSException_LoggingExtensions.m */,
 				457B5EBF1097BFCD00B564BC /* FileFunctionLine.h */,
 				457B5EC01097BFCD00B564BC /* FileFunctionLine.m */,
 				457B5EC81097BFCD00B564BC /* Logging.xcdatamodel */,
@@ -429,6 +439,8 @@
 				45750E2F12661993004F1415 /* CLogEvent.m in Sources */,
 				45750E321266199C004F1415 /* CLogSession.m in Sources */,
 				45750E4512661AAE004F1415 /* CFileHandleLoggingDestination.m in Sources */,
+				45750FCF1266F3E8004F1415 /* NSError_LoggingExtensions.m in Sources */,
+				45750FD61266F43B004F1415 /* NSException_LoggingExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
