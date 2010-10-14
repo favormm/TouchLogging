@@ -6,20 +6,20 @@
 //  Copyright 2010 toxicsoftware.com. All rights reserved.
 //
 
-#import "CLoggingDestination.h"
+#import "CCoreDataLoggingDestination.h"
 
 #import <CoreData/CoreData.h>
 
 #import "CBetterCoreDataManager.h"
 
-@interface CLoggingDestination () <CCoreDataManagerDelegate>
+@interface CCoreDataLoggingDestination () <CCoreDataManagerDelegate>
 @property (readwrite, retain) CBetterCoreDataManager *coreDataManager;
 @property (readwrite, copy) NSManagedObjectID *sessionID;
 @end
 
 #pragma mark -
 
-@implementation CLoggingDestination
+@implementation CCoreDataLoggingDestination
 
 @synthesize coreDataManager;
 @synthesize sessionID;
@@ -91,8 +91,9 @@
     return(theSession);
     }
 
-- (void)logDictionary:(NSDictionary *)inDictionary
+- (BOOL)logging:(CLogging *)inLogging didLogEvent:(CLogEvent *)inEvent
     {
+    return(NO);
     }
 
 @end

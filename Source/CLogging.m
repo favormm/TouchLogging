@@ -29,15 +29,13 @@
 
 #import "CLogging.h"
 
-#import "CBetterCoreDataManager.h"
+#import "CFileHandleLoggingDestination.h"
 
 static CLogging *gInstance = NULL;
 
-@interface CLogging () <CCoreDataManagerDelegate>
-@property (readwrite, assign) BOOL started;
-
-- (void)start;
-- (void)end;
+@interface CLogging ()
+- (void)startSession;
+- (void)endSession;
 @end
 
 #pragma mark -
@@ -45,14 +43,12 @@ static CLogging *gInstance = NULL;
 @implementation CLogging
 
 @synthesize enabled;
-@synthesize flags;
 @synthesize sender;
 @synthesize facility;
-@synthesize loggingDestination;
-@synthesize handlers;
-@synthesize started;
+@synthesize sessions;
+@synthesize destinations;
 
-+ (CLogging *)instance
++ (CLogging *)sharedInstance
     {
     NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 
@@ -69,31 +65,6 @@ static CLogging *gInstance = NULL;
     return(gInstance);
     }
 
-+ (NSString *)stringForLevel:(NSInteger)inLevel;
-    {
-    switch (inLevel)
-        {
-        case LoggingLevel_EMERG:
-            return(@"Emergency");
-        case LoggingLevel_ALERT:
-            return(@"Alert");
-        case LoggingLevel_CRIT:
-            return(@"Critcial");
-        case LoggingLevel_ERR:
-            return(@"Error");
-        case LoggingLevel_WARNING:
-            return(@"Warning");
-        case LoggingLevel_NOTICE:
-            return(@"Notice");
-        case LoggingLevel_INFO:
-            return(@"Info");
-        case LoggingLevel_DEBUG:
-            return(@"Debug");
-        default:
-            return([NSString stringWithFormat:@"%d", inLevel]);
-        }
-    }
-
 #pragma mark -
 
 - (id)init
@@ -105,96 +76,113 @@ static CLogging *gInstance = NULL;
             enabled = [theEnabledFlag boolValue];
         else
             enabled = YES;
-
-        flags = LoggingFlags_WriteToSTDERR;
-    //	#if DEBUG_LOGGING_PERSISTANT
-        flags |= LoggingFlags_WriteToDatabase;
-    //	#endif
+            
+        [self addDestination:[[[CFileHandleLoggingDestination alloc] init] autorelease]];
         }
     return(self);
     }
 
 - (void)dealloc
     {
-    [self end];
+    [self endSession];
 
     [sender release];
     sender = NULL;
     [facility release];
     facility = NULL;
-    [loggingDestination release];
-    loggingDestination = NULL;
-    [handlers release];
-    handlers = NULL;
+    [destinations release];
+    destinations = NULL;
     //
     [super dealloc];
     }
 
 #pragma mark -
 
-- (CLoggingDestination *)destination
+- (NSMutableArray *)sessions
     {
+    if (sessions == NULL)
+        {
+        sessions = [[NSMutableArray alloc] init];
+        }
+    return(sessions);
     }
 
 #pragma mark -
 
-- (void)addHandler:(id <CLoggingHandler>)inHandler forEvents:(NSArray *)inEvents;
+- (void)addDestination:(id <CLoggingDestination>)inHandler
     {
-    if (self.handlers == NULL)
-        self.handlers = [NSMutableDictionary dictionary];
+    if (self.destinations == NULL)
+        self.destinations = [NSMutableArray array];
 
-    for (NSString *theEvent in inEvents)
-        {
-        NSMutableArray *theHandlers = [self.handlers objectForKey:theEvent];
-        if (theHandlers == NULL)
-            {
-            theHandlers = [NSMutableArray arrayWithObject:inHandler];
-            [self.handlers setObject:theHandlers forKey:theEvent];
-            }
-        else
-            {
-            [theHandlers addObject:inHandler];
-            }
-        }
+    [self.destinations addObject:inHandler];
 
-    if (self.started == YES)
+    if (self.sessions.count > 0)
         {
-        if ([inEvents containsObject:@"start"])
+        if ([inHandler respondsToSelector:@selector(loggingDidStart:)])
             {
-            [inHandler handleLogging:self event:@"start" error:NULL];
+            [inHandler loggingDidStart:self];
             }
         }
     }
 
-- (void)removeHandler:(id <CLoggingHandler>)inHandler
+- (void)removeDestination:(id <CLoggingDestination>)inHandler
     {
-    for (NSMutableArray *theHandlers in [self.handlers allValues])
-        {
-        if ([theHandlers containsObject:inHandler])
-            [theHandlers removeObject:inHandler];
-        }
+    [self.destinations removeObject:inHandler];
     }
 
-- (void)start
+- (void)startSession
     {
-    NSArray *theHandlers = [self.handlers objectForKey:@"start"];
-    for (id <CLoggingHandler> theHandler in theHandlers)
+    [self.sessions addObject:[[[CLogSession alloc] init] autorelease]];
+
+    for (id <CLoggingDestination> theHandler in self.destinations)
         {
-        [theHandler handleLogging:self event:@"start" error:NULL];
+        if ([theHandler respondsToSelector:@selector(loggingDidStart:)])
+            {
+            [theHandler loggingDidStart:self];
+            }
         }
 
-    self.started = YES;
     }
 
-- (void)end
+- (void)endSession
     {
-    NSArray *theHandlers = [self.handlers objectForKey:@"end"];
-    for (id <CLoggingHandler> theHandler in theHandlers)
+    for (id <CLoggingDestination> theHandler in self.destinations)
         {
-        [theHandler handleLogging:self event:@"end" error:NULL];
+        if ([theHandler respondsToSelector:@selector(loggingDidEnd:)])
+            {
+            [theHandler loggingDidEnd:self];
+            }
+        }
+
+    [self.sessions removeLastObject];
+    }
+
+#pragma mark -
+
+- (void)logEvent:(CLogEvent *)inLogEvent;
+    {
+    if (self.enabled == NO)
+        return;
+        
+    if (self.sessions.count == 0)
+        {
+        [self startSession];
+        }
+
+    inLogEvent.session = [self.sessions lastObject];
+    inLogEvent.timestamp = [NSDate date];
+    
+    if (inLogEvent.sender == NULL)
+        inLogEvent.sender = self.sender;
+    if (inLogEvent.facility == NULL)
+        inLogEvent.facility = self.facility;
+
+    for (id <CLoggingDestination> theHandler in self.destinations)
+        {
+        [theHandler logging:self didLogEvent:inLogEvent];
         }
     }
-
+    
 #pragma mark -
 
 - (void)logLevel:(int)inLevel format:(NSString *)inFormat, ...
@@ -206,13 +194,16 @@ static CLogging *gInstance = NULL;
     NSString *theMessage = [[[NSString alloc] initWithFormat:inFormat arguments:theArgList] autorelease];
     va_end(theArgList);
 
-    SFileFunctionLine theFileFunctionLine = { .file = NULL, .function = NULL, .line = 0 };
-    [self logLevel:inLevel fileFunctionLine:theFileFunctionLine dictionary:NULL format:@"%@", theMessage];
+    CLogEvent *theEvent = [[[CLogEvent alloc] init] autorelease];
+    theEvent.level = inLevel;
+    theEvent.message = theMessage;
+    
+    [self logEvent:theEvent];
 
     [thePool release];
     }
 
-- (void)logLevel:(int)inLevel dictionary:(NSDictionary *)inDictionary format:(NSString *)inFormat, ...;
+- (void)logLevel:(int)inLevel userInfo:(NSDictionary *)inDictionary messageFormat:(NSString *)inFormat, ...;
     {
     NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 
@@ -221,90 +212,32 @@ static CLogging *gInstance = NULL;
     NSString *theMessage = [[[NSString alloc] initWithFormat:inFormat arguments:theArgList] autorelease];
     va_end(theArgList);
 
-    SFileFunctionLine theFileFunctionLine = { .file = NULL, .function = NULL, .line = 0 };
-    [self logLevel:inLevel fileFunctionLine:theFileFunctionLine dictionary:inDictionary format:@"%@", theMessage];
+    CLogEvent *theEvent = [[[CLogEvent alloc] init] autorelease];
+    theEvent.level = inLevel;
+    theEvent.message = theMessage;
+    theEvent.userInfo = inDictionary;
+
+    [self logEvent:theEvent];
 
     [thePool release];
     }
 
-- (void)logLevel:(int)inLevel fileFunctionLine:(SFileFunctionLine)inFileFunctionLine dictionary:(NSDictionary *)inDictionary format:(NSString *)inFormat, ...;
+- (void)logLevel:(int)inLevel fileFunctionLine:(SFileFunctionLine)inFileFunctionLine userInfo:(NSDictionary *)inDictionary messageFormat:(NSString *)inFormat, ...;
     {
     NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
-
-    if (self.enabled == NO)
-        return;
-
-    if (self.started == NO)
-        [self start];
-
 
     va_list theArgList;
     va_start(theArgList, inFormat);
     NSString *theMessageString = [[[NSString alloc] initWithFormat:inFormat arguments:theArgList] autorelease];
     va_end(theArgList);
 
-    if (self.flags & LoggingFlags_WriteToSTDERR)
-        {
-        char *theLevelString = NULL;
-        switch (inLevel)
-            {
-            case LoggingLevel_EMERG:
-                theLevelString = "EMERG: ";
-                break;
-            case LoggingLevel_ALERT:
-                theLevelString = "ALERT: ";
-                break;
-            case LoggingLevel_CRIT:
-                theLevelString = "CRIT:  ";
-                break;
-            case LoggingLevel_ERR:
-                theLevelString = "ERROR: ";
-                break;
-            case LoggingLevel_WARNING:
-                theLevelString = "WARN:  ";
-                break;
-            case LoggingLevel_NOTICE:
-                theLevelString = "NOTICE:";
-                break;
-            case LoggingLevel_INFO:
-                theLevelString = "INFO:  ";
-                break;
-            case LoggingLevel_DEBUG:
-                theLevelString = "DEBUG: ";
-                break;
-            }
+    CLogEvent *theEvent = [[[CLogEvent alloc] init] autorelease];
+    theEvent.level = inLevel;
+    theEvent.message = theMessageString;
+    theEvent.userInfo = inDictionary;
 
-        fprintf(stderr, "%s %s\n", theLevelString, [theMessageString UTF8String]);
-        }
-
-    if (self.flags & LoggingFlags_WriteToDatabase)
-        {
-        NSMutableDictionary *theDictionary = [NSMutableDictionary dictionary];
-        
-        [theDictionary setObject:[NSNumber numberWithInteger:inLevel] forKey:@"level"];
-        [theDictionary setObject:theMessageString forKey:@"message"];
-        [theDictionary setObject:[NSDate date] forKey:@"timestamp"];
-        [theDictionary setObject:self.sender forKey:@"sender"];
-        [theDictionary setObject:self.facility forKey:@"facility"];
-//        [theDictionary setObject:self.session forKey:@"session"];
-        
-        
-        if (inDictionary)
-            {
-            NSData *theAttributesData = [NSPropertyListSerialization dataFromPropertyList:inDictionary format:NSPropertyListBinaryFormat_v1_0 errorDescription:NULL];
-            [theDictionary setObject:theAttributesData forKey:@"extraAttributes"];
-            }
-        
-        
-        [self.destination logDictionary:theDictionary];
-
-        NSArray *theHandlers = [self.handlers objectForKey:@"log"];
-        for (id <CLoggingHandler> theHandler in theHandlers)
-            {
-            [theHandler handleLogging:self event:@"log" error:NULL];
-            }
-        }
-
+    [self logEvent:theEvent];
+    
     [thePool release];
     }
 
@@ -314,24 +247,28 @@ static CLogging *gInstance = NULL;
     {
     NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 
-    NSDictionary *theUserInfo = [inError userInfo];
-
-    int theLevel = LoggingLevel_ERR;
-    NSNumber *theLevelValue = [theUserInfo objectForKey:@"level"];
-    if (theLevelValue != NULL)
-        theLevel = [theLevelValue intValue];
-
-    NSMutableDictionary *theDictionary = [NSMutableDictionary dictionaryWithDictionary:theUserInfo];
-    [theDictionary setObject:[inError domain] forKey:@"domain"];
-    [theDictionary setObject:[NSNumber numberWithInteger:[inError code]] forKey:@"code"];
+    NSMutableDictionary *theUserInfo = [NSMutableDictionary dictionaryWithDictionary:inError.userInfo];
+    [theUserInfo setObject:[inError domain] forKey:@"domain"];
+    [theUserInfo setObject:[NSNumber numberWithInteger:[inError code]] forKey:@"code"];
     if ([inError localizedDescription] != NULL)
-        [theDictionary setObject:[inError localizedDescription] forKey:@"localizedDescription"];
+        [theUserInfo setObject:[inError localizedDescription] forKey:@"localizedDescription"];
     if ([inError localizedFailureReason] != NULL)
-        [theDictionary setObject:[inError localizedFailureReason] forKey:@"localizedFailureReason"];
+        [theUserInfo setObject:[inError localizedFailureReason] forKey:@"localizedFailureReason"];
     if ([inError localizedRecoverySuggestion] != NULL)
-        [theDictionary setObject:[inError localizedRecoverySuggestion] forKey:@"localizedRecoverySuggestion"];
+        [theUserInfo setObject:[inError localizedRecoverySuggestion] forKey:@"localizedRecoverySuggestion"];
 
-    [self logLevel:theLevel dictionary:theDictionary format:@"%@", [inError localizedDescription]];
+    CLogEvent *theEvent = [[[CLogEvent alloc] init] autorelease];
+
+    theEvent.level = LoggingLevel_ERR;
+    NSNumber *theLevelValue = [inError.userInfo objectForKey:@"level"];
+    if (theLevelValue != NULL)
+        {
+        theEvent.level = [theLevelValue intValue];
+        }
+    theEvent.message = [inError localizedDescription];
+    theEvent.userInfo = theUserInfo;
+
+    [self logEvent:theEvent];
 
     [thePool release];
     }
@@ -355,7 +292,7 @@ static CLogging *gInstance = NULL;
         if (theLevelValue != NULL)
             theLevel = [theLevelValue intValue];
 
-        [self logLevel:theLevel dictionary:theDictionary format:@"%@", [inException reason]];
+        [self logLevel:theLevel userInfo:theDictionary messageFormat:@"%@", [inException reason]];
         }
 
     [thePool release];
@@ -370,7 +307,7 @@ static CLogging *gInstance = NULL;
 - (void)log
     {
     #if LOGGING == 1
-    [[CLogging instance] logError:self];
+    [[CLogging sharedInstance] logError:self];
     #endif /* LOGGING == 1 */
     }
 
@@ -383,7 +320,7 @@ static CLogging *gInstance = NULL;
 - (void)log
     {
     #if LOGGING == 1
-    [[CLogging instance] logException:self];
+    [[CLogging sharedInstance] logException:self];
     #endif /* LOGGING == 1 */
     }
 

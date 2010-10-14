@@ -32,7 +32,7 @@
 #import <MessageUI/MessageUI.h>
 #import "CLogging.h"
 
-@interface CMailLoggingHandler : NSObject <CLoggingHandler, UIAlertViewDelegate, MFMailComposeViewControllerDelegate> {
+@interface CMailLoggingHandler : NSObject <CLoggingDestination, UIAlertViewDelegate, MFMailComposeViewControllerDelegate> {
 	NSPredicate *predicate;
 	UIViewController *viewController;
 	NSArray *recipients;

@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+#import "CLogging.h"
+
 @class CBetterCoreDataManager;
 @class NSManagedObject;
 @class NSManagedObjectID;
 
-@interface CLoggingDestination : NSObject {
+@interface CCoreDataLoggingDestination : NSObject <CLoggingDestination> {
 	CBetterCoreDataManager *coreDataManager;
 	NSManagedObjectID *sessionID;
 }
 
 @property (readonly, copy) NSManagedObjectID *sessionID;
 @property (readonly, retain) NSManagedObject *session;
-
-- (void)logDictionary:(NSDictionary *)inDictionary;
 
 @end
