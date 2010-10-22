@@ -50,7 +50,7 @@
 @property (readwrite, assign) BOOL enabled;
 @property (readwrite, copy) NSString *sender;
 @property (readwrite, copy) NSString *facility;
-@property (readwrite, retain) NSMutableArray *sessions;
+@property (readonly, retain) NSMutableArray *sessions;
 @property (readwrite, retain) NSMutableArray *destinations;
 
 /** Returns the thread's logging instance */

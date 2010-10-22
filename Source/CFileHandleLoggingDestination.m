@@ -91,7 +91,7 @@
             theData = self.block(inEvent);
             }
         }
-#endif NS_BLOCKS_AVAILABLE
+#endif /* NS_BLOCKS_AVAILABLE */
 
     if (theData != NULL)
         {
