@@ -175,8 +175,6 @@ static CLogging *gInstance = NULL;
     if (inLogEvent.facility == NULL)
         inLogEvent.facility = self.facility;
 
-    NSLog(@"%@", inLogEvent);
-
     for (id <CLoggingDestination> theHandler in self.destinations)
         {
         [theHandler logging:self didLogEvent:inLogEvent];
