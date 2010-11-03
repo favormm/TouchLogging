@@ -26,4 +26,6 @@
 @property (readwrite, nonatomic, copy) NSData *(^block)(CLogEvent *inEvent);
 #endif /* NS_BLOCKS_AVAILABLE */
 
+- (id)initWithFileHandle:(NSFileHandle *)inFileHandle;
+
 @end

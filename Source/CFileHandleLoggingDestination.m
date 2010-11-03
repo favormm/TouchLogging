@@ -17,11 +17,12 @@
 @synthesize block;
 #endif /* NS_BLOCKS_AVAILABLE */
 
-- (id)init
+- (id)initWithFileHandle:(NSFileHandle *)inFileHandle
     {
     if ((self = [super init]) != NULL)
         {
-        fileHandle = [[NSFileHandle fileHandleWithStandardError] retain];
+        fileHandle = [inFileHandle retain];
+		[fileHandle seekToEndOfFile];
         synchronizeOnWrite = YES;
         #if NS_BLOCKS_AVAILABLE
         block = ^(CLogEvent *inEvent) {
