@@ -74,9 +74,14 @@ static CLogging *gInstance = NULL;
             enabled = [theEnabledFlag boolValue];
         else
             enabled = YES;
-            
-        [self addDestination:[[[CFileHandleLoggingDestination alloc] initWithFileHandle:[NSFileHandle fileHandleWithStandardError]] autorelease]];
-		
+
+		@try {
+			[self addDestination:[[[CFileHandleLoggingDestination alloc] initWithFileHandle:[NSFileHandle fileHandleWithStandardError]] autorelease]];
+			}
+		@catch (NSException * e)
+			{
+			}
+
 		NSError *theError = NULL;
 		NSURL *theLogFile = [[NSFileManager defaultManager] URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:0 create:YES error:&theError];
 		theLogFile = [theLogFile URLByAppendingPathComponent:@"Run.log"];
@@ -86,7 +91,10 @@ static CLogging *gInstance = NULL;
 			[[NSData data] writeToURL:theLogFile atomically:NO];
 			}
 		
-        [self addDestination:[[[CFileHandleLoggingDestination alloc] initWithFileHandle:[NSFileHandle fileHandleForWritingToURL:theLogFile error:&theError]] autorelease]];
+		if ([[NSFileManager defaultManager] fileExistsAtPath:theLogFile.path] == YES)
+			{
+			[self addDestination:[[[CFileHandleLoggingDestination alloc] initWithFileHandle:[NSFileHandle fileHandleForWritingToURL:theLogFile error:&theError]] autorelease]];
+			}
         }
     return(self);
     }
